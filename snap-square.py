@@ -1,6 +1,7 @@
 import sys
 from PIL import Image
 import os
+import glob
 
 def square_image(input_file, output_file=None):
     # Open the image
@@ -34,14 +35,42 @@ def square_image(input_file, output_file=None):
     os.remove(input_file)
     print(f"Deleted: {input_file}")
 
+def process_folder(folder_path):
+    # Supported image extensions
+    image_extensions = ['*.jpg', '*.jpeg', '*.png', '*.bmp', '*.gif', '*.tiff', '*.webp']
+    
+    # Find all image files in the folder
+    image_files = []
+    for ext in image_extensions:
+        image_files.extend(glob.glob(os.path.join(folder_path, ext)))
+        image_files.extend(glob.glob(os.path.join(folder_path, ext.upper())))
+    
+    if not image_files:
+        print(f"No image files found in {folder_path}")
+        return
+    
+    print(f"Found {len(image_files)} image(s) to process")
+    
+    # Process each image
+    for image_file in image_files:
+        print(f"\nProcessing: {image_file}")
+        square_image(image_file)
+
 # Run when executed directly
 if __name__ == '__main__':
     # Check if input provided
     if len(sys.argv) < 2:
-        print("Usage: python square_image.py input_image [output_image]")
+        print("Usage: python snap-square.py input_image_or_folder [output_image]")
+        print("       If input is a folder, all images in the folder will be processed")
     else:
-        # Get input filename
-        input_image = sys.argv[1]
-        # Get output filename if provided
-        output_image = sys.argv[2] if len(sys.argv) > 2 else None
-        square_image(input_image, output_image)
+        # Get input path
+        input_path = sys.argv[1]
+        
+        # Check if input is a directory
+        if os.path.isdir(input_path):
+            # Process all images in the folder
+            process_folder(input_path)
+        else:
+            # Process single image file
+            output_image = sys.argv[2] if len(sys.argv) > 2 else None
+            square_image(input_path, output_image)
