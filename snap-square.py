@@ -29,6 +29,10 @@ def square_image(input_file, output_file=None):
     # Save
     square_img.save(output_file)
     print(f"Saved: {output_file}")
+    
+    # Delete original image file
+    os.remove(input_file)
+    print(f"Deleted: {input_file}")
 
 # Run when executed directly
 if __name__ == '__main__':
