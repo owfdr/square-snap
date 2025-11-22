@@ -60,7 +60,7 @@ def process_folder(folder_path):
 if __name__ == '__main__':
     # Check if input provided
     if len(sys.argv) < 2:
-        print("Usage: python snap-square.py input_image_or_folder [output_image]")
+        print("Usage: python square-snap.py input_image_or_folder [output_image]")
         print("       If input is a folder, all images in the folder will be processed")
     else:
         # Get input path
